@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Login from './Login';
+import Shop from './Shop';
+import Cart from './Cart';
+
+import { useLogin } from './store';
 
 function App() {
+
+  const { email } = useLogin();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    <Router>
+      <Switch>
+        <Route path = "/" exact>
+          { email? <Shop />: <Login/>}
+        </Route>
+
+        <Route path = "/shop" exact>
+          { email? <Shop />: <Login/>}
+        </Route>
+
+        <Route path = "/cart" exact>
+          { email? <Shop />: <Cart/>}
+        </Route>
+
+      </Switch>
+    </Router>
+
   );
 }
+
 
 export default App;
