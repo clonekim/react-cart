@@ -4,6 +4,7 @@ import { useCart } from './store';
 const ProductItem = (item) => ( 
   <div style={{padding: 10}}>
     <b> {item.title} </b>
+    // eslint-disable-next-line jsx-a11y/alt-text
     <img src={item.image} style={{width: 100, height: 100}}/>
     <span> {item.price} $ </span>
   </div>

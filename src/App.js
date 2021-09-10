@@ -23,7 +23,7 @@ function App() {
         </Route>
 
         <Route path = "/cart" exact>
-          { email? <Shop />: <Cart/>}
+          { email? <Cart/>: <Login />}
         </Route>
 
       </Switch>
