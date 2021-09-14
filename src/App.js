@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './Login';
 import Shop from './Shop';
 import Cart from './Cart';
+import Admin from './Admin';
 
 import { useLogin } from './store';
 
@@ -14,6 +15,9 @@ function App() {
 
     <Router>
       <Switch>
+        <Route path="/admin" exact >
+          <Admin />
+        </Route>
         <Route path = "/" exact>
           { email? <Shop />: <Login/>}
         </Route>
