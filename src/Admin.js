@@ -2,7 +2,7 @@ import React, { useState} from 'react';
 import * as yup from 'yup';
 
 
-function InputPanel({removeHandler, index, setModels}) {
+function InputPanel({removeHandler, index, setModels, errors}) {
   const [fields, setFields] = useState({});
   const onChange = (key, e) => {
     setFields(state => ({...state, [key]: e.target.value}));
@@ -19,6 +19,8 @@ function InputPanel({removeHandler, index, setModels}) {
         분류2: <input type="text" onChange={e => onChange('part2', e) }/>
         시작: <input type="text" onChange={e => onChange('start', e) } />
         종료: <input type="text" onChange={e => onChange('end', e) } />
+
+        {errors.index === index && <p>{errors.message} </p>}
         <button onClick={removeHandler}>X</button>
 
       </span>
@@ -44,15 +46,16 @@ function Admin() {
 
   );
 
-  
+
   const [models, setModels] = useState([]);
-  
+  const [errors, setErrors] = useState({});
+
 
   const addModel =() => {
     setModels(state => ([...state, {part1: null,
                                     part2: null,
                                     start: null,
-                                    end: null}])); 
+                                    end: null}]));
   };
 
   const removeModel =(indx) => {
@@ -62,7 +65,15 @@ function Admin() {
 
   const onClick = () => {
 
-    InputSchema.validate(models).then(res => console.log(res)).catch(err => console.log(err));
+    InputSchema.validate(models)
+      .then(res => console.log(res))
+      .catch(err => {
+        console.log(err);
+        const {num} = err.path.match('\\[(?<num>.+)\\]').groups;
+        const errorMap = {index: parseInt(num, 10), message: err.message};
+        console.log(errorMap);
+        setErrors(errorMap);
+      });
   };
 
   return (
@@ -70,7 +81,7 @@ function Admin() {
       <p>
         <button onClick={addModel} >+ Add</button>
       </p>
-      {models.map((m, indx) => <InputPanel key={indx} setModels={setModels} index={indx} removeHandler={() => removeModel(indx)} />)}
+      {models.map((m, indx) => <InputPanel key={indx} errors={errors} setModels={setModels} index={indx} removeHandler={() => removeModel(indx)} />)}
       <button onClick={onClick} >OK</button>
     </div>
 
